@@ -1,14 +1,20 @@
 package com.tao.service;
 
+import com.tao.dto.RegisterUser;
+import com.tao.pojo.User;
 import com.tao.utils.Result;
 
 /**
- * UserService
+ * <p>
+ * 用户表 服务类
+ * </p>
  *
- * @author LiuRentao
- * @version 1.0
- * @since 2025/9/16 22:51
+ * @author tao
+ * @since 2025-09-17
  */
-public interface UserService {
-    public Result<String> login();
+public interface UserService{
+
+    User getUserByUsername(String username);
+
+    Result<?> registerUser(RegisterUser registerUser);
 }

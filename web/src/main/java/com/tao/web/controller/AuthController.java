@@ -1,6 +1,8 @@
 package com.tao.web.controller;
 
 import com.tao.dto.Login;
+import com.tao.pojo.User;
+import com.tao.service.UserService;
 import com.tao.utils.JwtUtils;
 import com.tao.utils.Result;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    private final UserService userService;
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public Result<?> login(@RequestBody Login loginRequest) {
@@ -41,14 +44,15 @@ public class AuthController {
             // 认证成功，生成JWT
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
-
+            User user = userService.getUserByUsername(loginRequest.getUsername());
             // 返回token和信息
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwt);
             response.put("type", "Bearer");
             response.put("username", authentication.getName());
-            response.put("authorities", authentication.getAuthorities());
-
+            if (user!=null){
+                response.put("nickname", user.getNickname());
+            }
             log.info("登录成功，返回token: {}", jwt);
             return Result.success(response);
 
@@ -62,11 +66,5 @@ public class AuthController {
     public Result<?> logout() {
         SecurityContextHolder.clearContext();
         return Result.success("退出成功");
-    }
-
-    // 添加一个测试接口
-    @GetMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Result<?> test() {
-        return Result.success("测试接口正常");
     }
 }

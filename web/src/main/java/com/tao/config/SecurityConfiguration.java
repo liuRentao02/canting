@@ -1,6 +1,5 @@
 package com.tao.config;
 
-import com.tao.serviceImpl.UserServiceImpl;
 import com.tao.utils.JwtFilter;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
@@ -8,8 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,11 +37,15 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class SecurityConfiguration {
 
-    private final UserServiceImpl userService;
+    private final UserDetailsService userService;
     private final JwtFilter jwtFilter;
+
+    public SecurityConfiguration(UserDetailsService userService, JwtFilter jwtFilter) {
+        this.userService = userService;
+        this.jwtFilter = jwtFilter;
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
@@ -51,8 +53,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                                 .requestMatchers("/api/login").permitAll()
                                 .requestMatchers("/api/logout").permitAll()
-                                .requestMatchers("/api/test").permitAll()
                                 .requestMatchers("/register").permitAll()
+                                .requestMatchers("/api/user/register").permitAll()
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/sendEmail").permitAll()
                                 .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
@@ -71,21 +73,21 @@ public class SecurityConfiguration {
         return http.build();
     }
 //s为压制警告的，没有其他意义
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // 警告：仅用于测试环境！
-        return new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence rawPassword) {
-                return rawPassword.toString(); // 明文存储
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                return rawPassword.toString().equals(encodedPassword); // 明文比较
-            }
-        };
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        // 警告：仅用于测试环境！
+//        return new PasswordEncoder() {
+//            @Override
+//            public String encode(CharSequence rawPassword) {
+//                return rawPassword.toString(); // 明文存储
+//            }
+//
+//            @Override
+//            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+//                return rawPassword.toString().equals(encodedPassword); // 明文比较
+//            }
+//        };
+//    }
 
     // CORS配置
     @Bean
@@ -101,10 +103,10 @@ public class SecurityConfiguration {
         return source;
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {

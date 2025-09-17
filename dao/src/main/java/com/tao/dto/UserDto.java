@@ -1,5 +1,6 @@
 package com.tao.dto;
 
+import com.tao.pojo.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
- * User
+ * UserDto
  *
  * @author LiuRentao
  * @version 1.0
@@ -19,7 +19,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class UserDto implements UserDetails {
+    private User user;
     private Collection<? extends GrantedAuthority> authorities;
     @Override
     public boolean isAccountNonExpired() {
@@ -38,7 +39,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.getStatus() != null && user.getStatus() == 1;
     }
 
     @Override
@@ -48,11 +49,11 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "88888888";
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return "admin";
+        return user.getUsername();
     }
 }
