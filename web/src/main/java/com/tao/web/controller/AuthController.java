@@ -50,6 +50,7 @@ public class AuthController {
             response.put("token", jwt);
             response.put("type", "Bearer");
             response.put("username", authentication.getName());
+            response.put("authorities", authentication.getAuthorities());
             if (user!=null){
                 response.put("nickname", user.getNickname());
             }

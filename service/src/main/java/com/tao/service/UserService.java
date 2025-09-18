@@ -1,6 +1,7 @@
 package com.tao.service;
 
 import com.tao.dto.RegisterUser;
+import com.tao.dto.UpdateUser;
 import com.tao.pojo.User;
 import com.tao.utils.Result;
 
@@ -17,4 +18,10 @@ public interface UserService{
     User getUserByUsername(String username);
 
     Result<?> registerUser(RegisterUser registerUser);
+
+    Result<?> updateUser(UpdateUser user);
+
+    Result<?> getUserList();
+
+    Result<?> deleteUser(Integer id);
 }

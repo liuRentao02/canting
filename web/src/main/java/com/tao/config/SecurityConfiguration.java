@@ -51,14 +51,9 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(
                         (auth)-> auth
                                 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                                .requestMatchers("/api/login").permitAll()
-                                .requestMatchers("/api/logout").permitAll()
-                                .requestMatchers("/register").permitAll()
-                                .requestMatchers("/api/user/register").permitAll()
-                                .requestMatchers("/login").permitAll()
-                                .requestMatchers("/sendEmail").permitAll()
+                                .requestMatchers("/api/login","/api/logout").permitAll()
                                 .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
-                                .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER")
+                                .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_USER")
                                 .anyRequest().authenticated())
 //                .httpBasic(Customizer.withDefaults());
                 .httpBasic(AbstractHttpConfigurer::disable)

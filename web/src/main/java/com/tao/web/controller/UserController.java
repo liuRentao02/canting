@@ -1,14 +1,13 @@
 package com.tao.web.controller;
 
 import com.tao.dto.RegisterUser;
+import com.tao.dto.UpdateUser;
 import com.tao.service.UserService;
 import com.tao.utils.Result;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author tao
  * @since 2025-09-17
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -28,5 +28,21 @@ public class UserController {
     @PostMapping("/register")
     public Result<?> register(@RequestBody RegisterUser registerUser) {
         return userService.registerUser(registerUser);
+    }
+
+    @PostMapping("/update")
+    public Result<?> updateUser(@RequestBody UpdateUser user) {
+        return userService.updateUser(user);
+    }
+
+    @GetMapping("/list")
+    public Result<?> getUserList(){
+        return userService.getUserList();
+    }
+
+    @DeleteMapping("/delete")
+    public Result<?> deleteUser(@RequestParam("id") Integer id) {
+        log.info("delete user id:{}", id);
+        return userService.deleteUser(id);
     }
 }

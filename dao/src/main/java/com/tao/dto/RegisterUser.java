@@ -46,7 +46,7 @@ public class RegisterUser {
     private String avatar;
 
     /**
-     * 角色ID（默认1-普通用户）
+     * 角色ID（默认2-普通用户）
      */
     private Integer roleId = 2;
 }
