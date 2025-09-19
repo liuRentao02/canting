@@ -5,6 +5,8 @@ import com.tao.pojo.User;
 import com.tao.service.UserService;
 import com.tao.utils.JwtUtils;
 import com.tao.utils.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Tag(name = "权限管理",description = "提供登录和登出的操作")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final UserService userService;
 
+    @Operation(summary = "根据账号和密码登录",description = "返回token令牌")
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public Result<?> login(@RequestBody Login loginRequest) {
         try {
@@ -63,6 +67,7 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "登出",description = "登出系统")
     @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     public Result<?> logout() {
         SecurityContextHolder.clearContext();
