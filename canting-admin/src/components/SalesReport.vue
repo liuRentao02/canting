@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  1
+  销售报表
 </template>
 
 <style scoped>

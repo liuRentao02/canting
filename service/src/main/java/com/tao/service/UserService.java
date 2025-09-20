@@ -21,7 +21,7 @@ public interface UserService{
 
     Result<?> updateUser(UpdateUser user);
 
-    Result<?> getUserList();
+    Result<?> getUserList(Integer currentPage,Integer pageSize,Integer num);
 
     Result<?> deleteUser(Integer id);
 }

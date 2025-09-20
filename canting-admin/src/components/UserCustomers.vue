@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  1
+客户管理
 </template>
 
 <style scoped>

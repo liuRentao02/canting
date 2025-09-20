@@ -36,8 +36,10 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public Result<?> getUserList(){
-        return userService.getUserList();
+    public Result<?> getUserList(@RequestParam("num") int num,
+                                 @RequestParam("currentPage") int currentPage,
+                                 @RequestParam("size") int pageSize) {
+        return userService.getUserList(currentPage,pageSize,num);
     }
 
     @DeleteMapping("/delete")

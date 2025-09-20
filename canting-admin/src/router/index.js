@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Login from "../page/login.vue";
+import {useUserStore} from "../store/user.js";
 
 const routes = [
     {
@@ -9,15 +9,24 @@ const routes = [
         children: [
             {
                 path: '',  // 修改为空字符串，作为默认子路由
+                name: 'Home',
                 component: () => import('../components/HomeComponents.vue')
             },
             {
                 path: 'user',  // 子路由路径不需要加/
-                component: () => import('../components/UserComponents.vue')
+                children: [
+                    {
+                        path: "staff",
+                        component: ()=>import('../components/UserStaff.vue')
+                    },
+                    {
+                        path: "customers",
+                        component: ()=>import("../components/UserCustomers.vue")
+                    }
+                ]
             },
             {
                 path: 'orders',  // 子路由路径不需要加/
-                component: () => import('../components/OrdersComponents.vue'),  // 建议使用专门的组件
                 children: [  // 修正拼写：children 不是 children
                     {
                         path: 'list',  // 子路由路径不需要加/
@@ -31,7 +40,6 @@ const routes = [
             },
             {
                 path: 'dishes',  // 子路由路径不需要加/
-                component: () => import('../components/DishesComponents.vue'),  // 建议使用专门的组件
                 children: [  // 修正拼写：children 不是 children
                     {
                         path: 'list',  // 子路由路径不需要加/
@@ -40,10 +48,6 @@ const routes = [
                     {
                         path: 'category',  // 子路由路径不需要加/
                         component: () => import('../components/DishesCategory.vue'),
-                    },
-                    {
-                        path: 'add',  // 子路由路径不需要加/
-                        component: () => import('../components/DishesAdd.vue'),
                     }
                 ]
             },
@@ -57,7 +61,17 @@ const routes = [
             },
             {
                 path: 'reports',  // 子路由路径不需要加/
-                component: () => import('../components/ReportsComponents.vue')
+                children: [
+                    {
+                        path: "sales",
+                        component: ()=>import('../components/SalesReport.vue')
+                    },
+                    {
+                        path: "dishes",
+                        component: ()=>import("../components/DishReport.vue")
+
+                    }
+                ]
             },
             {
                 path: 'settings',  // 子路由路径不需要加/
@@ -68,7 +82,7 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: () => Login
+        component: () => import("../page/login.vue")
     },
     {
         path: "/register",
@@ -88,8 +102,23 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     console.log('Navigating to:', to.path)
-    // 这里可以添加路由守卫逻辑
-    next()
+    const userStore = useUserStore()
+    const userToken = userStore.token
+
+    // 如果访问的是登录或注册页面，直接放行
+    if (to.path === '/login' || to.path === '/register') {
+        next()
+        return
+    }
+
+    // 如果有token，继续访问
+    if (userToken) {
+        next()
+    } else {
+        // 没有token，跳转到登录页面
+        next('/login')
+    }
 })
+
 
 export default router

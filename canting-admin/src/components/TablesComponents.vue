@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  1
+  餐桌管理
 </template>
 
 <style scoped>

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  1
+  优惠券管理
 </template>
 
 <style scoped>

@@ -14,7 +14,7 @@ import {Fold,
   Grid,
   Dish,
   Ticket,Setting} from '@element-plus/icons-vue'
-import {logout} from "../request/user.js";
+import {logout} from "../request/system.js";
 import router from "../router/index.js";
 import {useUserStore} from "../store/user.js";
 
@@ -74,11 +74,6 @@ const menuItems = [
         index: '/dishes/category',
         title: '菜品分类',
         path: 'category',
-      },
-      {
-        index: '/dishes/add',
-        title: '添加菜品',
-        path: 'add',
       }
     ]
   },
@@ -91,8 +86,20 @@ const menuItems = [
   {
     index: '/user',
     icon: markRaw(User),
-    title: '客户管理',
+    title: '人员管理',
     path: '/user',
+    children: [
+      {
+        index: '/user/staff',
+        title: '员工管理',
+        path: 'staff',
+      },
+      {
+        index: '/user/customers',
+        title: '顾客管理',
+        path: 'customers',
+      }
+    ]
   },
   {
     index: '/coupons',
@@ -125,7 +132,6 @@ const menuItems = [
     path: '/settings',
   }
 ]
-
 
 // 处理菜单点击
 const handleMenuClick = (index) => {
@@ -340,10 +346,6 @@ const logoutSys =async () => {
 
 /* 修改部分开始 */
 /* 外层容器样式 */
-.el-container {
-  height: 100vh;
-  overflow: hidden;
-}
 
 /* 主容器样式 */
 .main-container {
@@ -356,14 +358,29 @@ const logoutSys =async () => {
   background-color: #304156;
   height: 100%;
   transition: width 0.3s;
-  overflow: hidden; /* 侧边栏不滚动 */
+  overflow: auto; /* 侧边栏不滚动 */
 }
 
 .sidebar-menu {
   border-right: none;
   background-color: #304156;
-  height: 100%;
-  overflow: hidden; /* 菜单不滚动 */
+  height: auto; /* 修改这里，高度自适应内容 */
+  min-height: 100%; /* 确保至少占满整个高度 */
+  overflow: visible; /* 修改这里，菜单内容可见 */
+}
+
+/* 添加侧边栏滚动条样式 */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #4a5f7a;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #263445;
 }
 
 /* 主内容区域样式 */

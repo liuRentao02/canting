@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/login","/api/logout","api/user/register").permitAll()
                                 .requestMatchers("/v3/api-docs","/v3/api-docs/**","/swagger-ui.html","/swagger-ui/**").permitAll()
                                 .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
-                                .requestMatchers("/api/user/delete","api/user/update","api/user/list").hasAnyAuthority("ROLE_USER")
+                                .requestMatchers("/api/user/delete","api/user/update").hasAnyAuthority("ROLE_USER")
                                 .anyRequest().authenticated())
 //                .httpBasic(Customizer.withDefaults());
                 .httpBasic(AbstractHttpConfigurer::disable)

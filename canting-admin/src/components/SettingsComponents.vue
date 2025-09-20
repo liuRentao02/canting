@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  1
+设置
 </template>
 
 <style scoped>

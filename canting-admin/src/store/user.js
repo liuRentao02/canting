@@ -1,4 +1,4 @@
-// store/user.js
+// store/system.js
 import { defineStore } from "pinia";
 import { ref } from "vue";
 

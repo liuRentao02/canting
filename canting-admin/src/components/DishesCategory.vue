@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  1
+  菜品分类
 </template>
 
 <style scoped>

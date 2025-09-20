@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {register} from "../request/user.js";
+import {register} from "../request/system.js";
 import {ElMessage} from "element-plus";
+import {Lock,Iphone,User} from "@element-plus/icons-vue"
 const router = useRouter()
 
 // 表单数据
@@ -100,7 +101,7 @@ const goToLogin = () => {
             <el-input
                 v-model="formData.username"
                 placeholder="请输入用户名"
-                prefix-icon="User"
+                :prefix-icon="User"
             />
           </el-form-item>
 
@@ -108,7 +109,7 @@ const goToLogin = () => {
             <el-input
                 v-model="formData.phone"
                 placeholder="请输入手机号"
-                prefix-icon="Iphone"
+                :prefix-icon="Iphone"
             />
           </el-form-item>
 
@@ -117,7 +118,7 @@ const goToLogin = () => {
                 v-model="formData.password"
                 type="password"
                 placeholder="请输入密码"
-                prefix-icon="Lock"
+                :prefix-icon="Lock"
                 show-password
             />
           </el-form-item>
@@ -127,7 +128,7 @@ const goToLogin = () => {
                 v-model="formData.confirmPassword"
                 type="password"
                 placeholder="请再次输入密码"
-                prefix-icon="Lock"
+                :prefix-icon="Lock"
                 show-password
             />
           </el-form-item>

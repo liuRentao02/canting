@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  1
+菜品分析报告
 </template>
 
 <style scoped>

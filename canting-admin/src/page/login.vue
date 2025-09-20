@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 import { useRouter } from 'vue-router'
-import {login} from "../request/user.js";
+import {login} from "../request/system.js";
 import {useUserStore} from "../store/user.js";
 import {ElMessage} from "element-plus";
+import { User, Lock } from '@element-plus/icons-vue'
 const router = useRouter()
 const username = ref('')
 const password = ref('')
@@ -23,11 +24,10 @@ const handleLogin = async () => {
       username: username.value,
       password: password.value
     }))
-    console.log(response)
     if (response.code === 200){
       userStore.setToken(response.data.token)
       ElMessage.success(response.message)
-      router.push("/")
+      await router.push("/")
     }else {
       ElMessage.error(response.message)
     }
@@ -56,7 +56,7 @@ const goToRegister = () => {
           <el-input
               v-model="username"
               placeholder="请输入用户名"
-              prefix-icon="User"
+              :prefix-icon="User"
               autocomplete="username"
           />
         </el-form-item>
@@ -66,7 +66,7 @@ const goToRegister = () => {
               v-model="password"
               type="password"
               placeholder="请输入密码"
-              prefix-icon="Lock"
+              :prefix-icon="Lock"
               autocomplete="current-password"
               show-password
           />
